@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AppDatabaseModels.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Clientes">
+    <Key>
+      <PropertyRef Name="no_cliente" />
+    </Key>
+    <Property Name="no_cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="apellido" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="direccion" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="telefono" Type="numeric" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="sexo" Type="char" MaxLength="1" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cuentas">
+    <Key>
+      <PropertyRef Name="no_cuenta" />
+    </Key>
+    <Property Name="no_cuenta" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tipo_cuenta" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="saldo" Type="money" Nullable="false" />
+    <Property Name="no_cliente" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Transacciones">
+    <Key>
+      <PropertyRef Name="no_trasaccion" />
+    </Key>
+    <Property Name="no_trasaccion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="no_cuenta_remitente" Type="int" Nullable="false" />
+    <Property Name="no_cuenta_destinatario" Type="int" Nullable="false" />
+    <Property Name="tipo_trasaccion" Type="int" Nullable="false" />
+    <Property Name="monto_trasaccion" Type="money" Nullable="false" />
+  </EntityType>
+  <Association Name="Cuentas_relation_1">
+    <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+    <End Role="Cuentas" Type="Self.Cuentas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Clientes">
+        <PropertyRef Name="no_cliente" />
+      </Principal>
+      <Dependent Role="Cuentas">
+        <PropertyRef Name="no_cliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AppDatabaseModelsStoreContainer">
+    <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cuentas" EntityType="Self.Cuentas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Transacciones" EntityType="Self.Transacciones" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="Cuentas_relation_1" Association="Self.Cuentas_relation_1">
+      <End Role="Clientes" EntitySet="Clientes" />
+      <End Role="Cuentas" EntitySet="Cuentas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -24,8 +24,10 @@ namespace Iniciar
 
         private void EntrarBTN_Click(object sender, EventArgs e)
         {
-            Clientes obj = new Clientes();    
-            obj.ShowDialog();
+            Menu menuForm = new Menu();
+            this.Hide();
+            menuForm.Closed += (s, arg) => this.Close();
+            menuForm.Show();
         }
     }
 }

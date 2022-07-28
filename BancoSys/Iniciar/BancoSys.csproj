@@ -33,8 +33,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,6 +80,30 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modelos\BancoAppDatabase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BancoAppDatabase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\BancoAppDatabase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BancoAppDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\BancoAppDatabase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BancoAppDatabase.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Clientes.cs">
+      <DependentUpon>BancoAppDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Cuentas.cs">
+      <DependentUpon>BancoAppDatabase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Transacciones.cs">
+      <DependentUpon>BancoAppDatabase.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transacciones.cs">
@@ -104,6 +137,14 @@
     <EmbeddedResource Include="Transacciones.resx">
       <DependentUpon>Transacciones.cs</DependentUpon>
     </EmbeddedResource>
+    <EntityDeploy Include="Modelos\BancoAppDatabase.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BancoAppDatabase.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Modelos\BancoAppDatabase.edmx.diagram">
+      <DependentUpon>BancoAppDatabase.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -119,6 +160,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\2454a129-39a6-48ac-bc5f-4f13b0ae2c6d.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Modelos\BancoAppDatabase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BancoAppDatabase.edmx</DependentUpon>
+      <LastGenOutput>BancoAppDatabase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Modelos\BancoAppDatabase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BancoAppDatabase.edmx</DependentUpon>
+      <LastGenOutput>BancoAppDatabase.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

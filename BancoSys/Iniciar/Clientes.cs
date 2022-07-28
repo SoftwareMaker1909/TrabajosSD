@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using Clientes;
+using Iniciar.Modelos;
 
 namespace Iniciar
 
@@ -22,7 +23,6 @@ namespace Iniciar
 
         }
 
-        ConsultasSQL sql = new ConsultasSQL();
         private void backCbtn_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -30,70 +30,133 @@ namespace Iniciar
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            using (BancoAppEntities db = new BancoAppEntities())
+            {
+                int id = int.Parse(dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[0].Value.ToString());
+                var cliente = db.Clientes.Where(x => x.no_cliente == id).FirstOrDefault();
+                cliente.nombre = tbnombre.Text;
+                cliente.apellido = tbapellido.Text;
+                cliente.direccion = tbdirrecion.Text;
+                cliente.telefono = decimal.Parse(tbtelefono.Text);
+                cliente.sexo = cbgenero.SelectedItem.ToString();
+                db.Entry(cliente).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+            consultarDatos();
+            Actualizarbtn.Enabled = false;
+            eliminarbtn.Enabled = false;
+            Agregarbtn.Enabled = true;
+            limpiar();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }
-        int NoCuentar = new Random().Next(100000000, 1999999999);
 
         private void Agregarbtn_Click(object sender, EventArgs e)
         {
-            IDTXT.Text = dgv.Rows.Count.ToString();
-            NoCuentaTXT.Text = NoCuentar.ToString();
 
-            if (sql.insertar(IDTXT.Text, NAMETXT.Text, LNAMETXT.Text, ADDRESSTXT.Text, CELLTXT.Text, GENDERTXT.Text, NoCuentaTXT.Text))
-            {
-
-                MessageBox.Show("DATOS Agregados CORRECTAMENTE");
+            using (BancoAppEntities db = new BancoAppEntities()) {
+                var cliente = new Modelos.Clientes();
+                cliente.nombre = tbnombre.Text;
+                cliente.apellido = tbapellido.Text;
+                cliente.direccion = tbdirrecion.Text;
+                cliente.telefono =  decimal.Parse(tbtelefono.Text);
+                cliente.sexo = cbgenero.SelectedItem.ToString();
+                db.Clientes.Add(cliente);
+                db.SaveChanges();
             }
-            else
-            {
-                MessageBox.Show("NO SE HAN PODIDO Agregar LOS DATOS");
-            }
+            limpiar();
+            consultarDatos();
 
         }
 
         private void dgv_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridViewRow fila = dgv.Rows[e.RowIndex];
-            IDTXT.Text = Convert.ToString(fila.Cells[0].Value);
-            NAMETXT.Text = Convert.ToString(fila.Cells[1].Value);
-            LNAMETXT.Text = Convert.ToString(fila.Cells[2].Value);
-            ADDRESSTXT.Text = Convert.ToString(fila.Cells[3].Value);
-            CELLTXT.Text = Convert.ToString(fila.Cells[4].Value);
-            GENDERTXT.Text = Convert.ToString(fila.Cells[5].Value);
-            var NoCuentar = new Random().Next(100000, 199999);
-           
+        }
 
-
-
-
-
-
-
+        private void limpiar()
+        {
+            tbnombre.Text = "";
+            tbapellido.Text = "";
+            tbdirrecion.Text = "";
+            tbtelefono.Text = "";
         }
 
         private void Clientes_Load(object sender, EventArgs e)
         {
-            dgv.DataSource = sql.MostrarDatos();
+            consultarDatos();
 
+        }
+
+        private void consultarDatos()
+        {
+            using (BancoAppEntities db = new BancoAppEntities())
+            {
+                dgvDatos.DataSource = null;
+                //this.dgvDatos.Rows.Clear();
+                this.dgvDatos.DataSource = db.Clientes.ToList();
+            }
         }
 
         private void eliminarbtn_Click(object sender, EventArgs e)
         {
-
-            if (sql.Eliminar(IDTXT.Text))
+            using (BancoAppEntities db = new BancoAppEntities())
             {
+                int id = int.Parse(dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[0].Value.ToString());
+                var cliente = db.Clientes.Where(x => x.no_cliente == id).FirstOrDefault();
+                db.Clientes.Remove(cliente);
+                db.SaveChanges();
+            }
+            consultarDatos();
+            Actualizarbtn.Enabled = false;
+            eliminarbtn.Enabled = false;
+            Agregarbtn.Enabled = true;
+            limpiar();
+        }
 
-                MessageBox.Show("DATOS ELIMINADOS CORRECTAMENTE");
+        private void dgv_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+           
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void dgvDatos_MouseDoubleClick_1(object sender, MouseEventArgs e)
+        {
+            Actualizarbtn.Enabled = true;
+            eliminarbtn.Enabled = true;
+            Agregarbtn.Enabled = false;
+            tbnocliente.Text = dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[0].Value.ToString();
+            tbnombre.Text = dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[1].Value.ToString();
+            tbapellido.Text = dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[2].Value.ToString();
+            tbdirrecion.Text = dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[3].Value.ToString();
+            tbtelefono.Text = dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[4].Value.ToString();
+            if (dgvDatos.Rows[dgvDatos.CurrentRow.Index].Cells[0].Value.ToString() == "M")
+            {
+                cbgenero.SelectedIndex = 2;
             }
             else
             {
-                MessageBox.Show("NO SE HAN PODIDO ELIMINAR LOS DATOS");
+                cbgenero.SelectedIndex = 1;
             }
+        }
+
+        private void Buscarbtn_Click(object sender, EventArgs e)
+        {
+            if(tbsearch.Text != "")
+            {
+                using (BancoAppEntities db = new BancoAppEntities()) 
+                {
+                    dgvDatos.DataSource = null;
+                    //this.dgvDatos.Rows.Clear();
+                    this.dgvDatos.DataSource = db.Clientes.Where(x => x.nombre == tbsearch.Text || x.apellido == tbsearch.Text).ToList();
+                }
+            } 
         }
     }
 }

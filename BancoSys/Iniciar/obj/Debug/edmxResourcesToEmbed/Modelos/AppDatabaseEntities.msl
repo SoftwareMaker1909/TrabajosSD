@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BancoAppModelsStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="Clientes">
+      <EntityTypeMapping TypeName="BancoAppModels.Cliente">
+        <MappingFragment StoreEntitySet="Clientes">
+          <ScalarProperty Name="no_cliente" ColumnName="no_cliente" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="sexo" ColumnName="sexo" />
+          <ScalarProperty Name="account" ColumnName="account" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Cuentas">
+      <EntityTypeMapping TypeName="BancoAppModels.Cuenta">
+        <MappingFragment StoreEntitySet="Cuentas">
+          <ScalarProperty Name="no_cuenta" ColumnName="no_cuenta" />
+          <ScalarProperty Name="tipo_cuenta" ColumnName="tipo_cuenta" />
+          <ScalarProperty Name="saldo" ColumnName="saldo" />
+          <ScalarProperty Name="no_cliente" ColumnName="no_cliente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Transacciones">
+      <EntityTypeMapping TypeName="BancoAppModels.Transaccione">
+        <MappingFragment StoreEntitySet="Transacciones">
+          <ScalarProperty Name="no_trasaccion" ColumnName="no_trasaccion" />
+          <ScalarProperty Name="no_cuenta" ColumnName="no_cuenta" />
+          <ScalarProperty Name="tipo_trasaccion" ColumnName="tipo_trasaccion" />
+          <ScalarProperty Name="monto_trasaccion" ColumnName="monto_trasaccion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
